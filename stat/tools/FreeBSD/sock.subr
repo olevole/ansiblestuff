@@ -1,0 +1,96 @@
+# split $1 ( IP:PORT ) to:
+# _interface="iface"
+# _port=port
+get_bind_info()
+{
+	local _ip
+	_ip="${1%%:*}"
+	_port="${1##*:}"
+
+	case "${_ip}" in
+		'*')
+			_interface="все"
+			;;
+		*)
+			for i in $( ifconfig -l ); do
+				_tst=$( ifconfig ${i} |grep "inet ${_ip}" )
+				[ $? -eq 0 ] && _interface="${i}" && break
+			done
+			;;
+	esac
+}
+
+# todo:
+# составить матрицу-реестр (sqlite3 db?) из связки
+# hostname, путь_процесса и тд для идентификации описания?
+get_desc()
+{
+	_desc=""
+
+	case "${_proc}" in
+		"sshd")
+			_desc="сервер ssh, необходим для удаленного управления"
+			;;
+		"bacula-fd")
+			_desc="Порт связи с агентом системы резервного копирования Bacula"
+			;;
+		"klnagent")
+			_desc="Порт связи с агентом ативируса Kaspersky"
+			;;
+		"mysqld")
+			_desc="sql-сервер"
+			;;
+		"postgres")
+			_desc="sql-сервер"
+			;;
+		"ntpd")
+			_desc="сервер времени"
+			;;
+		"beremote")
+			_desc="агент сервера бэкапов"
+			;;
+		"nginx")
+			_desc="вэб-сервер"
+			;;
+		"apache2")
+			_desc="вэб-сервер"
+			;;
+		"rpcbind")
+			_desc="компонент RPC, сервиса удаленного вызова процедур"
+			;;
+		"portmap")
+			_desc="компонент RPC, сервиса удаленного вызова процедур"
+			;;
+		"rpc.statd")
+			_desc="компонент RPC/NFS, сервис мониторинга статуса хоста"
+			;;
+		*)
+			_desc="Недокументированный сервис ${_proc}"
+			;;
+	esac
+}
+
+
+html_table_header()
+{
+cat <<EOF
+<table class="images">
+	<thead>
+	<tr>
+		<th>Порт</th>
+		<th>Протокол</th>
+		<th>Интерфейс</th>
+		<th>Процесс</th>
+		<th>Нужен для</th>
+	</tr>
+	</thead><tbody>
+EOF
+}
+
+endof_html_table_header()
+{
+cat <<EOF
+</tbody></table>
+EOF
+}
+

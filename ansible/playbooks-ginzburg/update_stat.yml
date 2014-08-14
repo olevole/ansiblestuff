@@ -1,0 +1,12 @@
+---
+- hosts: allhosts
+  user: ginzburg
+  sudo: yes
+  tasks:
+  - name: transfer script
+    copy: src=/usr/local/ansible/res-ginzburg/stat.tgz dest=/home/ginzburg/stat.tgz mode=0444
+  - name: extract
+    action: shell cd /home/ginzburg && tar xfz stat.tgz
+  - name: fetch info
+    action: shell test -x /home/ginzburg/stat/tools/compile_html.sh && cd /home/ginzburg/stat/tools && ./compile_html.sh > /home/ginzburg/card.html
+

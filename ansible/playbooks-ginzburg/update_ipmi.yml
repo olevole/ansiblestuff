@@ -1,0 +1,12 @@
+---
+- hosts: allhosts
+  user: ginzburg
+  sudo: yes
+  tasks:
+  - name: transfer script
+    copy: src=/usr/local/ansible/res-ginzburg/update_ipmi.sh dest=/tmp/update_ipmi.sh mode=0555
+
+  - name: Execute
+    command: /bin/sh /tmp/update_ipmi.sh
+    async: 30
+    poll: 5

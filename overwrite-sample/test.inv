@@ -1,0 +1,16 @@
+{
+    "ansible_facts": {
+        "ansible_all_ipv4_addresses": [
+            "192.168.0.2"
+        ], 
+        "ansible_default_ipv4": {
+            "address": "192.168.0.1"
+        }, 
+        "ansible_fqdn": "test.test.test", 
+        "ansible_hostname": "test", 
+        "ansible_kernel": "3.2.0-4-amd64", 
+        "ansible_nodename": "sip-alls"
+    }, 
+    "changed": false
+}
+
